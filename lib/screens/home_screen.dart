@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pokedex_app/providers/pokemon_provider.dart';
+import 'package:pokedex_app/screens/detail_screen.dart';
 import 'package:pokedex_app/widgets/pokemon_card.dart';
 
 class HomeScreen extends ConsumerWidget {
@@ -33,7 +34,18 @@ class HomeScreen extends ConsumerWidget {
             ),
             itemCount: pokemons.length,
             itemBuilder: (ctx, index) {
-              return PokemonCard(pokemon: pokemons[index]);
+              final pokemon = pokemons[index];
+              return PokemonCard(
+                pokemon: pokemon,
+                onTap: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (_) =>
+                          DetailScreen(id: pokemon.id, name: pokemon.name),
+                    ),
+                  );
+                },
+              );
             },
           ),
         ),
