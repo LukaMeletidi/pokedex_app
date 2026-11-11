@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pokedex_app/providers/pokemon_provider.dart';
+import 'package:pokedex_app/widgets/pokemon_card.dart';
 
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
@@ -14,14 +15,17 @@ class HomeScreen extends ConsumerWidget {
       body: pokemonsAsync.when(
         error: (error, stack) => Center(child: Text('Error $error')),
         loading: () => const Center(child: CircularProgressIndicator()),
-        data: (pokemons) => ListView.builder(
+        data: (pokemons) => GridView.builder(
+          padding: const EdgeInsets.all(8),
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+            mainAxisSpacing: 8,
+            crossAxisSpacing: 8,
+            childAspectRatio: 0.85,
+          ),
           itemCount: pokemons.length,
           itemBuilder: (ctx, index) {
-            final pokemon = pokemons[index];
-            return ListTile(
-              leading: Image.network(pokemon.imageUrl, width: 56, height: 56),
-              title: Text(pokemon.name),
-            );
+            return PokemonCard(pokemon: pokemons[index]);
           },
         ),
       ),
