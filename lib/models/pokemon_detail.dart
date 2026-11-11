@@ -32,6 +32,9 @@ class PokemonDetail {
   final List<String> types;
   final List<PokemonStat> stats;
 
+  double get heightInMeters => height / 10;
+  double get weightInKg => weight / 10;
+
   factory PokemonDetail.fromJson(Map<String, dynamic> json) {
     final id = json['id'] as int;
     final typesList = json['types'] as List;
