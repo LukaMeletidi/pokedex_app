@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pokedex_app/providers/pokemon_detail_provider.dart';
+import 'package:pokedex_app/utils/format.dart';
 import 'package:pokedex_app/widgets/stat_bar.dart';
 
 class DetailScreen extends ConsumerWidget {
@@ -20,7 +21,7 @@ class DetailScreen extends ConsumerWidget {
     final detailAsync = ref.watch(pokemonDetailProvider(id));
 
     return Scaffold(
-      appBar: AppBar(title: Text(name)),
+      appBar: AppBar(title: Text(capitalize(name))),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: SizedBox(
@@ -29,11 +30,30 @@ class DetailScreen extends ConsumerWidget {
             children: [
               Hero(
                 tag: 'pokemon-$id',
-                child: Image.network(imageUrl, height: 250),
+                child: Image.network(
+                  imageUrl,
+                  height: 250,
+                  errorBuilder: (context, error, stackTrace) => const SizedBox(
+                    height: 250,
+                    child: Icon(Icons.broken_image, size: 64),
+                  ),
+                ),
               ),
               const SizedBox(height: 16),
               detailAsync.when(
-                error: (error, stack) => Text('Error $error'),
+                error: (error, stack) => Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const Text('Something went wrong'),
+                    const SizedBox(height: 12),
+                    ElevatedButton(
+                      onPressed: () {
+                        ref.invalidate(pokemonDetailProvider(id));
+                      },
+                      child: const Text('Retry'),
+                    ),
+                  ],
+                ),
                 loading: () => const CircularProgressIndicator(),
                 data: (detail) => Column(
                   children: [
@@ -42,7 +62,7 @@ class DetailScreen extends ConsumerWidget {
                     Wrap(
                       spacing: 8,
                       children: detail.types
-                          .map((type) => Chip(label: Text(type)))
+                          .map((type) => Chip(label: Text(capitalize(type))))
                           .toList(),
                     ),
                     const SizedBox(height: 24),

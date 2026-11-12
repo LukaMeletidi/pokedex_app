@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pokedex_app/models/pokemon.dart';
+import 'package:pokedex_app/utils/format.dart';
 
 class PokemonCard extends StatelessWidget {
   const PokemonCard({super.key, required this.pokemon, required this.onTap});
@@ -17,12 +18,20 @@ class PokemonCard extends StatelessWidget {
             Expanded(
               child: Hero(
                 tag: 'pokemon-${pokemon.id}',
-                child: Image.network(pokemon.imageUrl),
+                child: Image.network(
+                  pokemon.imageUrl,
+                  errorBuilder: (context, error, stackTrace) =>
+                      const Icon(Icons.broken_image, size: 48),
+                  loadingBuilder: (context, child, loadingProgress) {
+                    if (loadingProgress == null) return child;
+                    return const Center(child: CircularProgressIndicator());
+                  },
+                ),
               ),
             ),
             Padding(
               padding: const EdgeInsets.all(8),
-              child: Text(pokemon.name),
+              child: Text(capitalize(pokemon.name)),
             ),
           ],
         ),

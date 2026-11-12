@@ -10,11 +10,26 @@ class HomeScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final pokemonsAsync = ref.watch(pokemonProvider);
+    final isLoadingMore = ref.watch(loadingMoreProvider);
 
     return Scaffold(
       appBar: AppBar(title: const Text('Pokedex')),
       body: pokemonsAsync.when(
-        error: (error, stack) => Center(child: Text('Error $error')),
+        error: (error, stack) => Center(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Text('Something went wrong'),
+              const SizedBox(height: 12),
+              ElevatedButton(
+                onPressed: () {
+                  ref.invalidate(pokemonProvider);
+                },
+                child: const Text('Retry'),
+              ),
+            ],
+          ),
+        ),
         loading: () => const Center(child: CircularProgressIndicator()),
         data: (pokemons) => NotificationListener<ScrollNotification>(
           onNotification: (notification) {
@@ -32,8 +47,11 @@ class HomeScreen extends ConsumerWidget {
               crossAxisSpacing: 8,
               childAspectRatio: 0.85,
             ),
-            itemCount: pokemons.length,
+            itemCount: pokemons.length + (isLoadingMore ? 1 : 0),
             itemBuilder: (ctx, index) {
+              if (index == pokemons.length) {
+                return const Center(child: CircularProgressIndicator());
+              }
               final pokemon = pokemons[index];
               return PokemonCard(
                 pokemon: pokemon,

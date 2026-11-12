@@ -16,6 +16,7 @@ class StatBar extends StatelessWidget {
           SizedBox(width: 40, child: Text('${stat.value}')),
           Expanded(
             child: LinearProgressIndicator(
+              backgroundColor: Theme.of(context).colorScheme.surface,
               value: stat.value / 255,
               minHeight: 8,
               borderRadius: BorderRadius.circular(4),
