@@ -14,8 +14,16 @@ class PokemonCard extends StatelessWidget {
         onTap: onTap,
         child: Column(
           children: [
-            Expanded(child: Image.network(pokemon.imageUrl)),
-            Padding(padding: const EdgeInsets.all(8), child: Text(pokemon.name)),
+            Expanded(
+              child: Hero(
+                tag: 'pokemon-${pokemon.id}',
+                child: Image.network(pokemon.imageUrl),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8),
+              child: Text(pokemon.name),
+            ),
           ],
         ),
       ),

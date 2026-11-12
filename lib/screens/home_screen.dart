@@ -40,8 +40,11 @@ class HomeScreen extends ConsumerWidget {
                 onTap: () {
                   Navigator.of(context).push(
                     MaterialPageRoute(
-                      builder: (_) =>
-                          DetailScreen(id: pokemon.id, name: pokemon.name),
+                      builder: (_) => DetailScreen(
+                        id: pokemon.id,
+                        name: pokemon.name,
+                        imageUrl: pokemon.imageUrl,
+                      ),
                     ),
                   );
                 },
