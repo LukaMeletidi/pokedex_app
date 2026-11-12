@@ -6,13 +6,9 @@ I made this project to practice working with a real REST API, pagination and nes
 
 ## Screenshots
 
-| Home | Detail |
-|------|--------|
-| <img src="screenshots/home.png" width="250"> | <img src="screenshots/detail.png" width="250"> |
-
-| Home (dark) | Detail (dark) |
-|-------------|---------------|
-| <img src="screenshots/home_dark.png" width="250"> | <img src="screenshots/detail_dark.png" width="250"> |
+| Home | Detail | Home (dark) | Detail (dark) |
+|------|--------|-------------|---------------|
+| <img src="screenshots/home.png" width="180"> | <img src="screenshots/detail.png" width="180"> | <img src="screenshots/home_dark.png" width="180"> | <img src="screenshots/detail_dark.png" width="180"> |
 
 ## Features
 
